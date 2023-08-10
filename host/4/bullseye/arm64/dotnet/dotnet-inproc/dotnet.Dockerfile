@@ -21,19 +21,21 @@ RUN apt-get update && \
     wget https://github.com/mohsinonxrm/azure-functions-extension-bundles/releases/download/$EXTENSION_BUNDLE_VERSION_V2_LOCATION/$EXTENSION_BUNDLE_FILENAME_V2 && \
     mkdir -p /FuncExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V2 && \
     unzip /$EXTENSION_BUNDLE_FILENAME_V2 -d /FuncExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V2 && \
-    rm -f /$EXTENSION_BUNDLE_FILENAME_V2 &&\
+    rm -f /$EXTENSION_BUNDLE_FILENAME_V2 && \
     EXTENSION_BUNDLE_VERSION_V3=3.26.0 && \
+    EXTENSION_BUNDLE_VERSION_V3_LOCATION=${EXTENSION_BUNDLE_VERSION_V3}-linux-arm64 && \
     EXTENSION_BUNDLE_FILENAME_V3=Microsoft.Azure.Functions.ExtensionBundle.${EXTENSION_BUNDLE_VERSION_V3}_linux-arm64.zip && \
     wget https://github.com/mohsinonxrm/azure-functions-extension-bundles/releases/download/$EXTENSION_BUNDLE_VERSION_V3_LOCATION/$EXTENSION_BUNDLE_FILENAME_V3 && \
     mkdir -p /FuncExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V3 && \
     unzip /$EXTENSION_BUNDLE_FILENAME_V3 -d /FuncExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V3 && \
-    rm -f /$EXTENSION_BUNDLE_FILENAME_V3 &&\
+    rm -f /$EXTENSION_BUNDLE_FILENAME_V3 && \
     EXTENSION_BUNDLE_VERSION_V4=4.9.0 && \
+    EXTENSION_BUNDLE_VERSION_V4_LOCATION=${EXTENSION_BUNDLE_VERSION_V4}-linux-arm64 && \
     EXTENSION_BUNDLE_FILENAME_V4=Microsoft.Azure.Functions.ExtensionBundle.${EXTENSION_BUNDLE_VERSION_V4}_linux-arm64.zip && \
     wget https://github.com/mohsinonxrm/azure-functions-extension-bundles/releases/download/$EXTENSION_BUNDLE_VERSION_V4_LOCATION/$EXTENSION_BUNDLE_FILENAME_V4 && \
     mkdir -p /FuncExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V4 && \
     unzip /$EXTENSION_BUNDLE_FILENAME_V4 -d /FuncExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V4 && \
-    rm -f /$EXTENSION_BUNDLE_FILENAME_V4 &&\
+    rm -f /$EXTENSION_BUNDLE_FILENAME_V4 && \
     find /FuncExtensionBundles/ -type f -exec chmod 644 {} \;
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:6.0
