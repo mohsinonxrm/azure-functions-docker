@@ -38,6 +38,9 @@ Linux amd64 Tags
 | `4-dotnet-isolated7.0-slim`               | Debian 11 |
 | `4-dotnet-isolated7.0-appservice`         | Debian 11 |
 | `4-dotnet-isolated7.0-appservice-quickstart` | Debian 11 |
+| `4-dotnet-isolated8.0`                    | Debian 12 |
+| `4-dotnet-isolated8.0-slim`               | Debian 12 |
+| `4-dotnet-isolated8.0-appservice`         | Debian 12 |
 
 #### Node
 
@@ -104,6 +107,12 @@ Linux amd64 Tags
 | `4-java17-core-tools`                  |  Debian 11   |
 | `4-java17-build`            | Debian 11  |
 | `4-java17-appservice-quickstart`            | Debian 11  |
+| `4-java21`                             |Debian 12  |
+| `4-java21-slim`                        |  Debian 12  |
+| `4-java21-appservice`                  |  Debian 12  |
+| `4-java21-core-tools`                  |  Debian 12   |
+| `4-java21-build`            | Debian 12  |
+| `4-java21-appservice-quickstart`            | Debian 12  |
 
 ### Python
 

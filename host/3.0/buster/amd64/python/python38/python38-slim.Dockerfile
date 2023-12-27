@@ -1,5 +1,5 @@
 # Build the runtime from source
-ARG HOST_VERSION=3.20.0
+ARG HOST_VERSION=3.21.0
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS runtime-image
 ARG HOST_VERSION
 
@@ -13,6 +13,7 @@ RUN BUILD_NUMBER=$(echo ${HOST_VERSION} | cut -d'.' -f 3) && \
     mv /azure-functions-host/workers /workers && mkdir /azure-functions-host/workers && \
     rm -rf /root/.local /root/.nuget /src
 
+## Do not upgrade Extension Bundles for v3 images.  They are manually capped in the Host.   Link : https://github.com/Azure/azure-functions-host/commit/d251aef1d33a585294a849e6750c4a950d75fc1b
 RUN EXTENSION_BUNDLE_VERSION=1.8.1 && \
     EXTENSION_BUNDLE_FILENAME=Microsoft.Azure.Functions.ExtensionBundle.1.8.1_linux-x64.zip && \
     apt-get update && \
@@ -27,7 +28,7 @@ RUN EXTENSION_BUNDLE_VERSION=1.8.1 && \
     mkdir -p /FuncExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V2 && \
     unzip /$EXTENSION_BUNDLE_FILENAME_V2 -d /FuncExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V2 && \
     rm -f /$EXTENSION_BUNDLE_FILENAME_V2 &&\
-    EXTENSION_BUNDLE_VERSION_V3=3.20.0 && \
+    EXTENSION_BUNDLE_VERSION_V3=3.19.0 && \
     EXTENSION_BUNDLE_FILENAME_V3=Microsoft.Azure.Functions.ExtensionBundle.${EXTENSION_BUNDLE_VERSION_V3}_linux-x64.zip && \
     wget https://functionscdn.azureedge.net/public/ExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V3/$EXTENSION_BUNDLE_FILENAME_V3 && \
     mkdir -p /FuncExtensionBundles/Microsoft.Azure.Functions.ExtensionBundle/$EXTENSION_BUNDLE_VERSION_V3 && \
@@ -89,7 +90,10 @@ COPY --from=runtime-image ["/azure-functions-host", "/azure-functions-host"]
 COPY --from=runtime-image [ "/workers/python/3.8/LINUX", "/azure-functions-host/workers/python/3.8/LINUX" ]
 COPY --from=runtime-image [ "/workers/python/worker.config.json", "/azure-functions-host/workers/python" ]
 COPY --from=runtime-image [ "/FuncExtensionBundles", "/FuncExtensionBundles" ]
+COPY start_deprecated.sh /azure-functions-host/
 
 ENV FUNCTIONS_WORKER_RUNTIME_VERSION=3.8
 
-CMD [ "/azure-functions-host/Microsoft.Azure.WebJobs.Script.WebHost" ]
+RUN chmod +x /azure-functions-host/start_deprecated.sh
+
+CMD ["/azure-functions-host/start_deprecated.sh"]

@@ -101,24 +101,21 @@ steps:
       - bash: |
           set -e
           docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java8-appservice
-          docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java8.1-appservice
           docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java11-appservice
-          docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java11.1-appservice
           docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java17-appservice
+          docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java21-appservice
           
           docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8-appservice $TARGET_REGISTRY/java:$(TargetVersion)-appservice-$(CloudName)-stage${{stage}}
           docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java8-appservice-$(CloudName)-stage${{stage}}
-          docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8.1-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java8.1-appservice-$(CloudName)-stage${{stage}}
           docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java11-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java11-appservice-$(CloudName)-stage${{stage}}
-          docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java11.1-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java11.1-appservice-$(CloudName)-stage${{stage}}
           docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java17-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java17-appservice-$(CloudName)-stage${{stage}}
+          docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java21-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java21-appservice-$(CloudName)-stage${{stage}}
           
           docker push $TARGET_REGISTRY/java:$(TargetVersion)-appservice-$(CloudName)-stage${{stage}}
           docker push $TARGET_REGISTRY/java:$(TargetVersion)-java8-appservice-$(CloudName)-stage${{stage}}
-          docker push $TARGET_REGISTRY/java:$(TargetVersion)-java8.1-appservice-$(CloudName)-stage${{stage}}
           docker push $TARGET_REGISTRY/java:$(TargetVersion)-java11-appservice-$(CloudName)-stage${{stage}}
-          docker push $TARGET_REGISTRY/java:$(TargetVersion)-java11.1-appservice-$(CloudName)-stage${{stage}}
           docker push $TARGET_REGISTRY/java:$(TargetVersion)-java17-appservice-$(CloudName)-stage${{stage}}
+          docker push $TARGET_REGISTRY/java:$(TargetVersion)-java21-appservice-$(CloudName)-stage${{stage}}
           
           docker system prune -a -f
         displayName: tag and push java images for stage ${{stage}}
@@ -181,8 +178,14 @@ steps:
       - bash: |
           set -e
           docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.2-appservice
+          docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.4-appservice
+
           docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.2-appservice $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.2-appservice-$(CloudName)-stage${{stage}}
+          docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.4-appservice $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.4-appservice-$(CloudName)-stage${{stage}}
+
           docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.2-appservice-$(CloudName)-stage${{stage}}
+          docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.4-appservice-$(CloudName)-stage${{stage}}
+
           docker system prune -a -f
         displayName: tag and push powershell images for stage ${{stage}}
         continueOnError: false

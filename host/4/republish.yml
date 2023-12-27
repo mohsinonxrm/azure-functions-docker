@@ -37,11 +37,13 @@ steps:
       docker pull $SOURCE_REGISTRY/dotnet:$(PrivateVersion)
       docker pull $SOURCE_REGISTRY/dotnet:$(PrivateVersion)-slim
       docker pull $SOURCE_REGISTRY/dotnet:$(PrivateVersion)-appservice
+      docker pull $SOURCE_REGISTRY/dotnet:$(PrivateVersion)-dotnet6-bookworm
 
       docker tag $SOURCE_REGISTRY/dotnet:$(PrivateVersion) $TARGET_REGISTRY/dotnet:$(TargetVersion)
       docker tag $SOURCE_REGISTRY/dotnet:$(PrivateVersion)-slim $TARGET_REGISTRY/dotnet:$(TargetVersion)-slim
       docker tag $SOURCE_REGISTRY/dotnet:$(PrivateVersion)-appservice $TARGET_REGISTRY/dotnet:$(TargetVersion)-dotnet6-appservice
       docker tag $SOURCE_REGISTRY/dotnet:$(PrivateVersion)-appservice $TARGET_REGISTRY/dotnet:$(TargetVersion)-appservice
+      docker tag $SOURCE_REGISTRY/dotnet:$(PrivateVersion)-dotnet6-bookworm $TARGET_REGISTRY/dotnet:$(TargetVersion)-dotnet6-bookworm
 
       docker tag $SOURCE_REGISTRY/dotnet:$(PrivateVersion) $TARGET_REGISTRY/base:$(TargetVersion)
       docker tag $SOURCE_REGISTRY/dotnet:$(PrivateVersion)-slim $TARGET_REGISTRY/base:$(TargetVersion)-slim
@@ -54,6 +56,7 @@ steps:
       docker push $TARGET_REGISTRY/base:$(TargetVersion)
       docker push $TARGET_REGISTRY/base:$(TargetVersion)-slim
       docker push $TARGET_REGISTRY/base:$(TargetVersion)-appservice
+      docker push $TARGET_REGISTRY/dotnet:$(TargetVersion)-dotnet6-bookworm
 
       docker system prune -a -f
     displayName: tag and push dotnet images
@@ -146,17 +149,15 @@ steps:
       docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java17-slim
       docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java17-build
       docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java17-appservice
-
-      docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java8.1-appservice
-      docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java11.1-appservice
+      docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java21
+      docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java21-slim
+      docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java21-build
+      docker pull $SOURCE_REGISTRY/java:$(PrivateVersion)-java21-appservice
 
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8 $TARGET_REGISTRY/java:$(TargetVersion)
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8-slim $TARGET_REGISTRY/java:$(TargetVersion)-slim
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8-appservice $TARGET_REGISTRY/java:$(TargetVersion)-appservice
       
-      docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8.1-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java8.1-appservice
-      docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java11.1-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java11.1-appservice
-
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8 $TARGET_REGISTRY/java:$(TargetVersion)-java8
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8-slim $TARGET_REGISTRY/java:$(TargetVersion)-java8-slim
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java8-appservice
@@ -169,16 +170,18 @@ steps:
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java17-slim $TARGET_REGISTRY/java:$(TargetVersion)-java17-slim
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java17-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java17-appservice
 
+      docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java21 $TARGET_REGISTRY/java:$(TargetVersion)-java21
+      docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java21-slim $TARGET_REGISTRY/java:$(TargetVersion)-java21-slim
+      docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java21-appservice $TARGET_REGISTRY/java:$(TargetVersion)-java21-appservice
+
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java8-build $TARGET_REGISTRY/java:$(TargetVersion)-java8-build
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java11-build $TARGET_REGISTRY/java:$(TargetVersion)-java11-build
       docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java17-build $TARGET_REGISTRY/java:$(TargetVersion)-java17-build
+      docker tag $SOURCE_REGISTRY/java:$(PrivateVersion)-java21-build $TARGET_REGISTRY/java:$(TargetVersion)-java21-build
 
       docker push $TARGET_REGISTRY/java:$(TargetVersion)
       docker push $TARGET_REGISTRY/java:$(TargetVersion)-slim
       docker push $TARGET_REGISTRY/java:$(TargetVersion)-appservice
-
-      docker push $TARGET_REGISTRY/java:$(TargetVersion)-java8.1-appservice
-      docker push $TARGET_REGISTRY/java:$(TargetVersion)-java11.1-appservice
 
       docker push $TARGET_REGISTRY/java:$(TargetVersion)-java8
       docker push $TARGET_REGISTRY/java:$(TargetVersion)-java8-slim
@@ -192,9 +195,14 @@ steps:
       docker push $TARGET_REGISTRY/java:$(TargetVersion)-java17-slim
       docker push $TARGET_REGISTRY/java:$(TargetVersion)-java17-appservice
 
+      docker push $TARGET_REGISTRY/java:$(TargetVersion)-java21
+      docker push $TARGET_REGISTRY/java:$(TargetVersion)-java21-slim
+      docker push $TARGET_REGISTRY/java:$(TargetVersion)-java21-appservice
+
       docker push $TARGET_REGISTRY/java:$(TargetVersion)-java8-build
       docker push $TARGET_REGISTRY/java:$(TargetVersion)-java11-build
       docker push $TARGET_REGISTRY/java:$(TargetVersion)-java17-build
+      docker push $TARGET_REGISTRY/java:$(TargetVersion)-java21-build
 
       docker system prune -a -f
     displayName: tag and push java images
@@ -288,17 +296,26 @@ steps:
       docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.2
       docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.2-slim
       docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.2-appservice
+      docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.4
+      docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.4-slim
+      docker pull $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.4-appservice
 
       docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.2 $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.2
       docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.2-slim $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.2-slim
       docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.2-appservice $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.2-appservice
+      docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.4 $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.4
+      docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.4-slim $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.4-slim
+      docker tag $SOURCE_REGISTRY/powershell:$(PrivateVersion)-powershell7.4-appservice $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.4-appservice
 
       docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.2
       docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.2-slim
       docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.2-appservice
+      docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.4
+      docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.4-slim
+      docker push $TARGET_REGISTRY/powershell:$(TargetVersion)-powershell7.4-appservice
 
       docker system prune -a -f
-    displayName: tag and push powershell 7.2 images
+    displayName: tag and push powershell 7.2/7.4 images
     continueOnError: false
 
   - bash: |

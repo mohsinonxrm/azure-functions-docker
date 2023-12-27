@@ -23,7 +23,7 @@ ENV ASPNETCORE_URLS=http://+:80 `
     DOTNET_USE_POLLING_FILE_WATCHER=true `
     NUGET_XMLDOC_MODE=skip `
     PublishWithAspNetCoreTargetManifest=false `
-    HOST_VERSION=3.20.0
+    HOST_VERSION=3.20.2
 
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
     $BuildNumber = $Env:HOST_VERSION.split('.')[-1]; `
@@ -37,8 +37,9 @@ RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tl
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-nanoserver-1909
 
 COPY --from=installer-env ["C:\\runtime", "C:\\runtime"]
+COPY start_deprecated.sh /azure-functions-host/
 
 ENV AzureWebJobsScriptRoot=C:\approot `
     WEBSITE_HOSTNAME=localhost:80
 
-CMD ["dotnet", "C:\\runtime\\Microsoft.Azure.WebJobs.Script.WebHost.dll"]
+CMD ["/azure-functions-host/start_deprecated.sh"]

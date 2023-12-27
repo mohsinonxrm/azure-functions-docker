@@ -1,5 +1,5 @@
 # Build the runtime from source
-ARG HOST_VERSION=4.24.3
+ARG HOST_VERSION=4.28.3
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS runtime-image
 ARG HOST_VERSION
 
@@ -16,8 +16,7 @@ RUN BUILD_NUMBER=$(echo ${HOST_VERSION} | cut -d'.' -f 3) && \
 RUN apt-get update && \
     apt-get install -y gnupg wget unzip
 
-# TO DO : Replace preview tags. https://github.com/Azure/azure-functions-docker/issues/927
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-preview-bookworm-slim-amd64
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim-amd64
 ARG HOST_VERSION
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
@@ -26,6 +25,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     DOTNET_USE_POLLING_FILE_WATCHER=true \
     HOST_VERSION=${HOST_VERSION} \
     ASPNETCORE_CONTENTROOT=/azure-functions-host \
+    AzureWebJobsFeatureFlags=EnableWorkerIndexing \
     ASPNETCORE_URLS=http://+:80
 
 # Fix from https://github.com/GoogleCloudPlatform/google-cloud-dotnet-powerpack/issues/22#issuecomment-729895157
@@ -33,5 +33,9 @@ RUN apt-get update && \
     apt-get install -y libc-dev
 
 COPY --from=runtime-image [ "/azure-functions-host", "/azure-functions-host" ]
+COPY install_ca_certificates.sh start_nonappservice.sh /opt/startup/
+RUN chmod +x /opt/startup/install_ca_certificates.sh && \
+    chmod +x /opt/startup/start_nonappservice.sh
 
-CMD [ "/azure-functions-host/Microsoft.Azure.WebJobs.Script.WebHost" ]
+
+CMD [ "/opt/startup/start_nonappservice.sh" ]
