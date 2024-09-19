@@ -1,5 +1,5 @@
 # Build the runtime from source
-ARG HOST_VERSION=4.27.7
+ARG HOST_VERSION=4.34.1
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS runtime-image
 ARG HOST_VERSION
 
@@ -28,10 +28,17 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureWebJobsFeatureFlags=EnableWorkerIndexing \
     ASPNETCORE_URLS=http://+:80
 
+# Default EXPOSE port inherited from Dotnet Base image has changed to 8080. Host still hosts on 80
+EXPOSE 80
+
 # Fix from https://github.com/GoogleCloudPlatform/google-cloud-dotnet-powerpack/issues/22#issuecomment-729895157
 RUN apt-get update && \
     apt-get install -y libc-dev
 
 COPY --from=runtime-image [ "/azure-functions-host", "/azure-functions-host" ]
+COPY install_ca_certificates.sh start_nonappservice.sh /opt/startup/
+RUN chmod +x /opt/startup/install_ca_certificates.sh && \
+    chmod +x /opt/startup/start_nonappservice.sh
 
-CMD [ "/azure-functions-host/Microsoft.Azure.WebJobs.Script.WebHost" ]
+
+CMD [ "/opt/startup/start_nonappservice.sh" ]
